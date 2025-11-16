@@ -87,17 +87,77 @@ function input_data($data){
 
 }
 
-
-    
-    function generateCode(){
-          // Generate a 6 digits hexadecimal number
-	  $numbytes = 3; // Because 6 digits hexadecimal = 3 bytes
-	  $bytes = openssl_random_pseudo_bytes($numbytes); 
-          $hex   = bin2hex($bytes);
-	  return $hex;
+function generateCode(){
+    // Generate a 6 digits hexadecimal number
+	$numbytes = 3; // Because 6 digits hexadecimal = 3 bytes
+	$bytes = openssl_random_pseudo_bytes($numbytes); 
+        $hex   = bin2hex($bytes);
+	return $hex;
         
-    }
-    
-    
+}
+function ecrisData($data,$id){
+	$cheminfile=__DIR__."/../dossier/dossierDe_".$id.'.JSON';
+	$nomfile='dossierDe_'.$id.'.JSON';
+	$content=$data;
+	file_put_contents($cheminfile,$data);
+	return $nomfile;
+}
+
+function genererCode(){
+	return random_int(100000,999999);
+}
+
+#envoi mail
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function envoimail($code,$mel){
+
+			require __DIR__.'/../vendor/autoload.php';
+
+			$mail = new PHPMailer(true);
+
+			try {
+				// Configuration SMTP
+			$mail->isSMTP();
+			$mail->Host = 'smtp.gmail.com';
+			$mail->SMTPAuth = true;
+			$mail->Username = 'sanji6n6@gmail.com';
+			$mail->Password = 'xetx irng aggc ziow';
+			$mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+			$mail->Port = 587;
+			
+			// Destinataires
+			$mail->setFrom('sanji6n6@gmail.com', 'GSBExtranet');
+			$mail->addAddress($mel, 'Lionel');
+			
+			// Contenu
+			$mail->isHTML(true);
+			$mail->Subject = "Test d'envoi via PHPMailer";
+			$mail->Body    = "
+			<html>
+			<head>
+			<title>Code d'authentification</title>
+			</head>
+			<body>
+			<p>Bonjour,</p>
+			<p>Voici votre code d'authentification : <b>".$code."</b></p>
+			<p>Il est valable 10 minutes.</p>
+			</body>
+			</html>
+			";
+			
+			$mail->send();
+			return " Email envoyé avec succès !";
+		}
+			catch(Exception $e) {
+			return " Erreur : {$mail->ErrorInfo}";
+			}
+}
+
+
+
+
+   
     
 ?>

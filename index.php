@@ -30,11 +30,17 @@ switch($uc){
         case 'creation':{
 		include("controleurs/c_creation.php");break;
 	}
-        
+    case 'droit':{
+		if(isset($_SESSION['hash']))
+			unset($_SESSION['hash']);
+		include("controleurs/c_portabilite.php");break;
+	}
+	case 'telecharger':
+		include("controleurs/c_portabilite.php");break;  
 	
 	}
 	
-
+include 'vues/v_footer.php';
 
 ?>
 

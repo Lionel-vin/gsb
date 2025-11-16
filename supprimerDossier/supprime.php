@@ -1,0 +1,3 @@
+<?php
+
+$chemin="dossier";

@@ -15,7 +15,9 @@ switch($action){
 		
            
 		$leLogin = htmlspecialchars($_POST['login']);
-                $lePassword = htmlspecialchars($_POST['mdp']);
+        $lePassword = htmlspecialchars($_POST['mdp']);
+        $prenom = htmlspecialchars($_POST['prenom']);
+        $nom = htmlspecialchars($_POST['nom']);
         
         
         if ($leLogin == $_POST['login'])
@@ -80,17 +82,24 @@ switch($action){
                  
         }
         }
-        if($rempli && $loginOk && $passwordOk){
+        $consentement=isset($_POST['okoupas'])?$_POST['okoupas']:'non';
+        if($consentement==='oui'){
+
+            if($rempli && $loginOk && $passwordOk){
                 echo 'tout est ok, nous allons pouvoir créer votre compte...<br/>';
-                $executionOK = $pdo->creeMedecin($leLogin,$lePassword);       
-               
+                $executionOK = $pdo->creeMedecin($nom,$prenom,$leLogin,$lePassword);       
+                
                 if ($executionOK==true){
                     echo "c'est bon, votre compte a bien été créé ;-)";
                     $pdo->connexionInitiale($leLogin);
                 }   
                 else
-                     echo "ce login existe déjà, veuillez en choisir un autre";
+                echo "ce login existe déjà, veuillez en choisir un autre";
             }
+        }
+        else{
+            echo 'Vous n\'avez pas accepté le consentement';
+        }
 
 			
         
